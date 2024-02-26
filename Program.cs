@@ -174,4 +174,71 @@ class Game
         Player2 = new Player("P2", new Position(5, 5));
         TotalTurns = 0;
     }
+
+    public void Start()
+    {
+        while (!IsGameOver())
+        {
+            Player currentPlayer = TotalTurns % 2 == 0 ? Player1 : Player2;
+            Position previousPosition = new Position(currentPlayer.Position.X, currentPlayer.Position.Y);
+
+            Console.Clear();
+            Board.Display();
+            Console.WriteLine($"Current turn: {currentPlayer.Name}");
+            Console.WriteLine($"Gems collected: {Player1.GemCount} (P1) - {Player2.GemCount} (P2)");
+
+            ConsoleKeyInfo key = Console.ReadKey();
+            if (key.Key == ConsoleKey.U || key.Key == ConsoleKey.D || key.Key == ConsoleKey.L || key.Key == ConsoleKey.R)
+            {
+                char direction = char.ToUpper(key.KeyChar);
+
+                if (Board.IsValidMove(currentPlayer, direction))
+                {
+                    currentPlayer.Move(direction);
+                    Board.CollectGem(currentPlayer);
+                    Board.UpdatePlayerPosition(currentPlayer, previousPosition);
+                    TotalTurns++;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid move. Try again.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Use U, D, L, R keys to move.");
+            }
+
+            // Pause for a moment to allow players to see the current state before proceeding
+
+        }
+
+        AnnounceWinner();
+    }
+
+    public bool IsGameOver()
+    {
+        return TotalTurns >= 30;
+    }
+
+    public void AnnounceWinner()
+    {
+        Console.Clear();
+        Console.WriteLine("Game over!");
+
+        Console.WriteLine($"Gems collected: {Player1.GemCount} (P1) - {Player2.GemCount} (P2)");
+
+        if (Player1.GemCount > Player2.GemCount)
+        {
+            Console.WriteLine("Player 1 (P1) wins!");
+        }
+        else if (Player2.GemCount > Player1.GemCount)
+        {
+            Console.WriteLine("Player 2 (P2) wins!");
+        }
+        else
+        {
+            Console.WriteLine("It's a tie!");
+        }
+    }
 }
