@@ -160,3 +160,18 @@ class Board
         }
     }
 }
+class Game
+{
+    public Board Board { get; }
+    public Player Player1 { get; }
+    public Player Player2 { get; }
+    public int TotalTurns { get; private set; }
+
+    public Game()
+    {
+        Board = new Board();
+        Player1 = new Player("P1", new Position(0, 0));
+        Player2 = new Player("P2", new Position(5, 5));
+        TotalTurns = 0;
+    }
+}
