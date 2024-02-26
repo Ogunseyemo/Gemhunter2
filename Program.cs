@@ -242,3 +242,11 @@ class Game
         }
     }
 }
+class Program
+{
+    static void Main()
+    {
+        Game gemHunters = new Game();
+        gemHunters.Start();
+    }
+}
